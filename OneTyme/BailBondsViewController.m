@@ -212,6 +212,7 @@
     return bailBondsObject;
 }
 
+<<<<<<< Updated upstream
 -(void)evaluateBailBonds
 {
     BailBonds *bailBonds = [[BailBonds alloc]init];
@@ -225,6 +226,9 @@
     [[NSUserDefaults standardUserDefaults] setObject:[self bailBondsObjectsAsAPropertyList:bailBonds] forKey:BAILBONDS_OBJECTS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+=======
+#pragma - Subviews
+>>>>>>> Stashed changes
 
 -(void) addBailBondDetailSubview{
     
@@ -288,12 +292,21 @@
     
     UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(6, 218, 125.5, 30)];
     [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
+<<<<<<< Updated upstream
     [btnLeft addTarget:self action:@selector(addBailBonds) forControlEvents:UIControlEventTouchUpInside];
     [bbds addSubview:btnLeft];
     
     UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(141.5, 218, 125.5, 30)];
     [btnRight setTitle:@"Cancel" forState:UIControlStateNormal];
     [btnRight addTarget:self action:@selector(addBailBonds) forControlEvents:UIControlEventTouchUpInside];
+=======
+    [btnLeft addTarget:self action:@selector(dismissViewBailBondDetail) forControlEvents:UIControlEventTouchUpInside];
+    [bbds addSubview:btnLeft];
+    
+    UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(6, 182, 82, 30)];
+    [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
+    [btnRight addTarget:self action:@selector(dismissViewBailBondDetail) forControlEvents:UIControlEventTouchUpInside];
+>>>>>>> Stashed changes
     [bbds addSubview:btnRight];
     
     [self.view addSubview:bbds];
@@ -356,6 +369,7 @@
     lblTitle.text = searchType;
     [search addSubview:lblTitle];
     
+<<<<<<< Updated upstream
     UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 41, 263, 30)];
     txtSearch.backgroundColor = [UIColor blackColor];
     txtSearch.layer.cornerRadius = 10;
@@ -363,15 +377,20 @@
     txtSearch.placeholder = @"Search zip code";
     [txtSearch setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     txtSearch.textAlignment = NSTextAlignmentCenter;
+=======
+    UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 39, 138, 21)];
+    //txtSearch.placeholder = @"Type search here";
+>>>>>>> Stashed changes
     [search addSubview:txtSearch];
     
     UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(7, 77, 82, 30)];
     [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
-    [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
-    [bbds addSubview:btnLeft];
+    [btnLeft addTarget:self action:@selector(dismissViewSearch) forControlEvents:UIControlEventTouchUpInside];
+    [search addSubview:btnLeft];
     
     UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(95, 77, 82, 30)];
     [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
+<<<<<<< Updated upstream
     [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
     [bbds addSubview:btnRight];
 
@@ -411,8 +430,22 @@
 }
 
 -(void)dismissView
+=======
+    [btnRight addTarget:self action:@selector(dismissViewSearch) forControlEvents:UIControlEventTouchUpInside];
+    [search addSubview:btnRight];
+    
+    [self.view addSubview:search];
+}
+
+-(void)dismissViewSearch
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [search removeFromSuperview];
+}
+
+-(void)dismissViewBailBondDetail
+>>>>>>> Stashed changes
+{
+    [bbds removeFromSuperview];
 }
 
 //-(BOOL)zipClicked
