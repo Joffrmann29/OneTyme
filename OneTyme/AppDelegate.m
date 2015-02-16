@@ -49,8 +49,8 @@
         NSLog(@"Failded to create gradient bg image, user will see standard tint color gradient.");
     }
     
-    _attorneyListData = [[NSMutableArray alloc]init];
-    _BailBondsListData = [[NSMutableArray alloc]init];
+    _AttorneyDataArray = [[NSMutableArray alloc]init];
+    _BailBondsDataArray = [[NSMutableArray alloc]init];
     [self intializePlistData];
 
     // Override point for customization after application launch.

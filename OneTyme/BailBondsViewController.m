@@ -8,9 +8,18 @@
 
 #import "BailBondsViewController.h"
 
-@interface BailBondsViewController (){
+@interface BailBondsViewController ()<UITextFieldDelegate>{
     UIView *bbds;
     UIView *search;
+    UIView *searchName;
+    BOOL isZipClicked;
+    BOOL isNameClicked;
+    BOOL isBailBondsClicked;
+    UITextField *txtFullName;
+    UITextField *txtAddress;
+    UITextField *txtPhone;
+    UITextField *txtSecondaryPhone;
+    UITextField *txtEmail;
 }
 
 @property (strong, nonatomic) AppDelegate *appDelegate;
@@ -25,6 +34,14 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    isZipClicked = NO;
+    isNameClicked = NO;
+    isBailBondsClicked = NO;
+    
+//    //BailBonds *bailBonds = [[NSUserDefaults standardUserDefaults] arrayForKey:BAILBONDS_OBJECTS_KEY];
+//    
+//    NSLog(@"%@", bailBonds.email);
     
     UIImageView *oneTymeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"AttorneyBackground.png"]];
     oneTymeImage.frame = CGRectMake(0, 64, self.view.frame.size.width, 663);
@@ -106,6 +123,8 @@
     UIButton *addEditButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [addEditButton setTitle:@"Add/edit my Bail Bonds" forState:UIControlStateNormal];
     addEditButton.frame = CGRectMake(70.5, 547, 273, 79);
+    [addEditButton addTarget:self action:@selector(addBailBonds) forControlEvents:UIControlEventTouchUpInside];
+    
     CALayer *addEditLayer = addEditButton.layer;
     addEditLayer = [self gradientBGLayerForBounds:addEditButton.bounds];
     addEditLayer.cornerRadius = 10;
@@ -126,6 +145,12 @@
         NSLog(@"Failded to create gradient bg image, user will see standard tint color gradient.");
     }
 
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -187,87 +212,183 @@
     return bailBondsObject;
 }
 
+
+-(void)evaluateBailBonds
+{
+    BailBonds *bailBonds = [[BailBonds alloc]init];
+    bailBonds.name = txtFullName.text;
+    bailBonds.address = txtAddress.text;
+    bailBonds.city = @"N/A";
+    bailBonds.state = @"N/A";
+    bailBonds.phone = txtPhone.text;
+    bailBonds.secondaryPhone = txtSecondaryPhone.text;
+    bailBonds.email = txtEmail.text;
+    [[NSUserDefaults standardUserDefaults] setObject:[self bailBondsObjectsAsAPropertyList:bailBonds] forKey:BAILBONDS_OBJECTS_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma - Subviews
+
+/*
+ -(void)addBailBonds
+ {
+ if(isBailBondsClicked == NO)
+ {
+ [self addBailBondDetailSubview];
+ isBailBondsClicked = YES;
+ }
+ 
+ else
+ {
+ [bbds removeFromSuperview];
+ isBailBondsClicked = NO;
+ }
+ }*/
+
 -(void) addBailBondDetailSubview{
     
-    bbds = [[UIView alloc] initWithFrame:CGRectMake(75, 50, 184, 220)];
+    bbds = [[UIView alloc] initWithFrame:CGRectMake(70.5, 319, 273, 258)];
     
-    bbds.backgroundColor = [UIColor blackColor];
+    bbds.backgroundColor = [UIColor darkGrayColor];
     
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(6, 7, 140, 25)];
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, 263, 21)];
     lblTitle.text = @"Bail Bonds Details";
     [bbds addSubview:lblTitle];
     
-    UITextField *txtFullName = [[UITextField alloc] initWithFrame:CGRectMake(10, 36, 174, 30)];
+    txtFullName = [[UITextField alloc] initWithFrame:CGRectMake(5, 36, 263, 30)];
+    txtFullName.backgroundColor = [UIColor blackColor];
+    txtFullName.layer.cornerRadius = 10;
+    txtFullName.textColor = [UIColor whiteColor];
     txtFullName.placeholder = @"Full Name";
+    [txtFullName setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtFullName.textAlignment = NSTextAlignmentCenter;
+    txtFullName.delegate = self;
     [bbds addSubview:txtFullName];
     
-    UITextField *txtAddress = [[UITextField alloc] initWithFrame:CGRectMake(10, 73, 174, 30)];
-    txtFullName.placeholder = @"Address";
+    txtAddress = [[UITextField alloc] initWithFrame:CGRectMake(5, 73, 263, 30)];
+    txtAddress.backgroundColor = [UIColor blackColor];
+    txtAddress.layer.cornerRadius = 10;
+    txtAddress.textColor = [UIColor whiteColor];
+    txtAddress.placeholder = @"Address";
+    [txtAddress setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtAddress.textAlignment = NSTextAlignmentCenter;
+    txtAddress.delegate = self;
     [bbds addSubview:txtAddress];
     
-    UITextField *txtPhone = [[UITextField alloc] initWithFrame:CGRectMake(10, 109, 174, 30)];
-    txtFullName.placeholder = @"Mobile/Landline";
+    txtPhone = [[UITextField alloc] initWithFrame:CGRectMake(10, 109, 263, 30)];
+    txtPhone.backgroundColor = [UIColor blackColor];
+    txtPhone.layer.cornerRadius = 10;
+    txtPhone.textColor = [UIColor whiteColor];
+    txtPhone.placeholder = @"Mobile/Landline";
+    [txtPhone setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtPhone.textAlignment = NSTextAlignmentCenter;
+    txtPhone.delegate = self;
     [bbds addSubview:txtPhone];
     
-    UITextField *txtEmail = [[UITextField alloc] initWithFrame:CGRectMake(10, 145, 174, 30)];
-    txtFullName.placeholder = @"Email";
+    txtSecondaryPhone = [[UITextField alloc] initWithFrame:CGRectMake(10, 145, 263, 30)];
+    txtSecondaryPhone.backgroundColor = [UIColor blackColor];
+    txtSecondaryPhone.layer.cornerRadius = 10;
+    txtSecondaryPhone.textColor = [UIColor whiteColor];
+    txtSecondaryPhone.placeholder = @"Mobile/Landline";
+    [txtSecondaryPhone setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtSecondaryPhone.textAlignment = NSTextAlignmentCenter;
+    txtSecondaryPhone.delegate = self;
+    [bbds addSubview:txtSecondaryPhone];
+    
+    txtEmail = [[UITextField alloc] initWithFrame:CGRectMake(10, 182, 263, 30)];
+    txtEmail.backgroundColor = [UIColor blackColor];
+    txtEmail.layer.cornerRadius = 10;
+    txtEmail.textColor = [UIColor whiteColor];
+    txtEmail.placeholder = @"Email";
+    [txtEmail setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtEmail.textAlignment = NSTextAlignmentCenter;
+    txtEmail.delegate = self;
     [bbds addSubview:txtEmail];
     
-    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(6, 182, 82, 30)];
+    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(6, 218, 125.5, 30)];
     [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
-    [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [btnLeft addTarget:self action:@selector(null) forControlEvents:UIControlEventTouchUpInside];//Add selector
     [bbds addSubview:btnLeft];
     
     UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(6, 182, 82, 30)];
     [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
-    [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [btnRight addTarget:self action:@selector(dismissViewBailBondDetail) forControlEvents:UIControlEventTouchUpInside];
     [bbds addSubview:btnRight];
     
     [self.view addSubview:bbds];
     
+    if(![txtFullName.text isEqualToString:@""] && ![txtAddress.text isEqualToString:@""]&& ![txtPhone.text isEqualToString:@""] && ![txtSecondaryPhone.text isEqualToString:@""] && ![txtEmail.text isEqualToString:@""]){
+        [self evaluateBailBonds];
+    }
 }
 
--(void)addSearchName{
 
-    [self addSearchView:@"Name"];
+-(void)addSearchName{
+    [self addSearch:@"Search by Name"];
 }
 
 -(void)addSearchZip{
-    
-    [self addSearchView:@"Zip"];
+    [self addSearch:@"Search by Zip"];
 }
-
--(void)addSearchView:(NSString *)searchType{
+-(void)addSearch:(NSString *)searchType{
+    isZipClicked = YES;
+    search = [[UIView alloc] initWithFrame:CGRectMake(68, 182, 273, 79)];
     
-    search = [[UIView alloc] initWithFrame:CGRectMake(68, 122, 184, 120)];
+    search.backgroundColor = [UIColor darkGrayColor];
     
-    search.backgroundColor = [UIColor blackColor];
-    
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(9, 10, 138, 21)];
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, 263, 21)];
     lblTitle.text = searchType;
     [search addSubview:lblTitle];
     
-    UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 39, 138, 21)];
+    UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 41, 263, 30)];
+    txtSearch.backgroundColor = [UIColor blackColor];
+    txtSearch.layer.cornerRadius = 10;
+    txtSearch.textColor = [UIColor whiteColor];
+    txtSearch.placeholder = @"Search zip code";
+    [txtSearch setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtSearch.textAlignment = NSTextAlignmentCenter;
     //txtSearch.placeholder = @"Type search here";
     [search addSubview:txtSearch];
-    
+
     UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(7, 77, 82, 30)];
     [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
-    [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [btnLeft addTarget:self action:@selector(null) forControlEvents:UIControlEventTouchUpInside];//add sumbit
     [search addSubview:btnLeft];
     
     UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(95, 77, 82, 30)];
     [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
-    [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
-    [search addSubview:btnRight];
-    
+    [btnRight addTarget:self action:@selector(dismissViewSearch) forControlEvents:UIControlEventTouchUpInside];
+    [bbds addSubview:btnRight];
+
     [self.view addSubview:search];
 }
 
--(void)dismissView
+-(void)dismissViewSearch
 {
     [search removeFromSuperview];
 }
 
+-(void)dismissViewBailBondDetail
+{
+    [bbds removeFromSuperview];
+}
+
+//-(BOOL)zipClicked
+//{
+//    BOOL isZipClicked;
+//    if(isZipClicked == YES)
+//    {
+//        //[search removeFromSuperview];
+//        isZipClicked = NO;
+//    }
+//    
+//    else
+//    {
+//        //[self addSearchZip];
+//        isZipClicked = YES;
+//    }
+//    
+//    return isZipClicked;
+//}
 
 @end
