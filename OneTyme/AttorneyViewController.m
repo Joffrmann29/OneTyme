@@ -10,7 +10,15 @@
 #import "AppDelegate.h"
 #import "Attorney.h"
 
-@interface AttorneyViewController ()
+@interface AttorneyViewController (){
+    UIView *ads;
+    UIView *search;
+    UITextField *txtFullName;
+    UITextField *txtAddress;
+    UITextField *txtPhone;
+    UITextField *txtSecondaryPhone;
+    UITextField *txtEmail;
+}
 
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
 
@@ -182,80 +190,135 @@
     return attorneyObject;
 }
 
+-(void)evaluateAttorney
+{
+    Attorney *attorney = [[Attorney alloc]init];
+    attorney.name = txtFullName.text;
+    attorney.address = txtAddress.text;
+    attorney.city = @"N/A";
+    attorney.state = @"N/A";
+    attorney.phone = txtPhone.text;
+    attorney.secondaryPhone = txtSecondaryPhone.text;
+    attorney.email = txtEmail.text;
+    [[NSUserDefaults standardUserDefaults] setObject:[self attorneyObjectsAsAPropertyList:attorney] forKey:ATTORNEY_OBJECTS_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 #pragma - Subviews
 
--(void) addAttorneyDetailSubview{
+
+-(void) addAttoneryDetailSubview{
     
-    ads = [[UIView alloc] initWithFrame:CGRectMake(75, 50, 184, 220)];
+    ads = [[UIView alloc] initWithFrame:CGRectMake(70.5, 319, 273, 258)];
     
-    bbds.backgroundColor = [UIColor blackColor];
+    ads.backgroundColor = [UIColor darkGrayColor];
     
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(6, 7, 140, 25)];
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, 263, 21)];
     lblTitle.text = @"Bail Bonds Details";
-    [bbds addSubview:lblTitle];
+    [ads addSubview:lblTitle];
     
-    UITextField *txtFullName = [[UITextField alloc] initWithFrame:CGRectMake(10, 36, 174, 30)];
+    txtFullName = [[UITextField alloc] initWithFrame:CGRectMake(5, 36, 263, 30)];
+    txtFullName.backgroundColor = [UIColor blackColor];
+    txtFullName.layer.cornerRadius = 10;
+    txtFullName.textColor = [UIColor whiteColor];
     txtFullName.placeholder = @"Full Name";
-    [bbds addSubview:txtFullName];
+    [txtFullName setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtFullName.textAlignment = NSTextAlignmentCenter;
+    txtFullName.delegate = self;
+    [ads addSubview:txtFullName];
     
-    UITextField *txtAddress = [[UITextField alloc] initWithFrame:CGRectMake(10, 73, 174, 30)];
-    txtFullName.placeholder = @"Address";
-    [bbds addSubview:txtAddress];
+    txtAddress = [[UITextField alloc] initWithFrame:CGRectMake(5, 73, 263, 30)];
+    txtAddress.backgroundColor = [UIColor blackColor];
+    txtAddress.layer.cornerRadius = 10;
+    txtAddress.textColor = [UIColor whiteColor];
+    txtAddress.placeholder = @"Address";
+    [txtAddress setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtAddress.textAlignment = NSTextAlignmentCenter;
+    txtAddress.delegate = self;
+    [ads addSubview:txtAddress];
     
-    UITextField *txtPhone = [[UITextField alloc] initWithFrame:CGRectMake(10, 109, 174, 30)];
-    txtFullName.placeholder = @"Mobile/Landline";
-    [bbds addSubview:txtPhone];
+    txtPhone = [[UITextField alloc] initWithFrame:CGRectMake(10, 109, 263, 30)];
+    txtPhone.backgroundColor = [UIColor blackColor];
+    txtPhone.layer.cornerRadius = 10;
+    txtPhone.textColor = [UIColor whiteColor];
+    txtPhone.placeholder = @"Mobile/Landline";
+    [txtPhone setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtPhone.textAlignment = NSTextAlignmentCenter;
+    txtPhone.delegate = self;
+    [ads addSubview:txtPhone];
     
-    UITextField *txtEmail = [[UITextField alloc] initWithFrame:CGRectMake(10, 145, 174, 30)];
-    txtFullName.placeholder = @"Email";
-    [bbds addSubview:txtEmail];
+    txtSecondaryPhone = [[UITextField alloc] initWithFrame:CGRectMake(10, 145, 263, 30)];
+    txtSecondaryPhone.backgroundColor = [UIColor blackColor];
+    txtSecondaryPhone.layer.cornerRadius = 10;
+    txtSecondaryPhone.textColor = [UIColor whiteColor];
+    txtSecondaryPhone.placeholder = @"Mobile/Landline";
+    [txtSecondaryPhone setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtSecondaryPhone.textAlignment = NSTextAlignmentCenter;
+    txtSecondaryPhone.delegate = self;
+    [ads addSubview:txtSecondaryPhone];
     
-    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(6, 182, 82, 30)];
+    txtEmail = [[UITextField alloc] initWithFrame:CGRectMake(10, 182, 263, 30)];
+    txtEmail.backgroundColor = [UIColor blackColor];
+    txtEmail.layer.cornerRadius = 10;
+    txtEmail.textColor = [UIColor whiteColor];
+    txtEmail.placeholder = @"Email";
+    [txtEmail setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtEmail.textAlignment = NSTextAlignmentCenter;
+    txtEmail.delegate = self;
+    [ads addSubview:txtEmail];
+    
+    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(6, 218, 125.5, 30)];
     [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
-    [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
-    [bbds addSubview:btnLeft];
+    [btnLeft addTarget:self action:@selector(null) forControlEvents:UIControlEventTouchUpInside];//Add selector
+    [ads addSubview:btnLeft];
     
     UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(6, 182, 82, 30)];
     [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
-    [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
-    [bbds addSubview:btnRight];
+    [btnRight addTarget:self action:@selector(dismissViewBailBondDetail) forControlEvents:UIControlEventTouchUpInside];
+    [ads addSubview:btnRight];
     
-    [self.view addSubview:bbds];
+    [self.view addSubview:ads];
     
+    if(![txtFullName.text isEqualToString:@""] && ![txtAddress.text isEqualToString:@""]&& ![txtPhone.text isEqualToString:@""] && ![txtSecondaryPhone.text isEqualToString:@""] && ![txtEmail.text isEqualToString:@""]){
+        [self evaluateAttorney];
+    }
 }
 
+
 -(void)addSearchName{
-    
-    [self addSearchView:@"Name"];
+    [self addSearch:@"Search by Name"];
 }
 
 -(void)addSearchZip{
-    
-    [self addSearchView:@"Zip"];
+    [self addSearch:@"Search by Zip"];
 }
-
--(void)addSearchView:(NSString *)searchType{
+-(void)addSearch:(NSString *)searchType{
+    search = [[UIView alloc] initWithFrame:CGRectMake(68, 182, 273, 79)];
     
-    search = [[UIView alloc] initWithFrame:CGRectMake(68, 122, 184, 120)];
+    search.backgroundColor = [UIColor darkGrayColor];
     
-    search.backgroundColor = [UIColor blackColor];
-    
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(9, 10, 138, 21)];
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, 263, 21)];
     lblTitle.text = searchType;
     [search addSubview:lblTitle];
     
-    UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 39, 138, 21)];
+    UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 41, 263, 30)];
+    txtSearch.backgroundColor = [UIColor blackColor];
+    txtSearch.layer.cornerRadius = 10;
+    txtSearch.textColor = [UIColor whiteColor];
+    txtSearch.placeholder = @"Search zip code";
+    [txtSearch setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    txtSearch.textAlignment = NSTextAlignmentCenter;
     //txtSearch.placeholder = @"Type search here";
     [search addSubview:txtSearch];
     
     UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(7, 77, 82, 30)];
     [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
-    [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [btnLeft addTarget:self action:@selector(null) forControlEvents:UIControlEventTouchUpInside];//add sumbit
     [search addSubview:btnLeft];
     
     UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(95, 77, 82, 30)];
     [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
-    [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [btnRight addTarget:self action:@selector(dismissViewSearch) forControlEvents:UIControlEventTouchUpInside];
     [search addSubview:btnRight];
     
     [self.view addSubview:search];
@@ -265,6 +328,12 @@
 {
     [search removeFromSuperview];
 }
+
+-(void)dismissViewBailBondDetail
+{
+    [ads removeFromSuperview];
+}
+
 
 
 @end

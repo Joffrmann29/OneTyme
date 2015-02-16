@@ -11,7 +11,6 @@
 @interface BailBondsViewController ()<UITextFieldDelegate>{
     UIView *bbds;
     UIView *search;
-    UIView *searchName;
     BOOL isZipClicked;
     BOOL isNameClicked;
     BOOL isBailBondsClicked;
@@ -372,23 +371,5 @@
 {
     [bbds removeFromSuperview];
 }
-
-//-(BOOL)zipClicked
-//{
-//    BOOL isZipClicked;
-//    if(isZipClicked == YES)
-//    {
-//        //[search removeFromSuperview];
-//        isZipClicked = NO;
-//    }
-//    
-//    else
-//    {
-//        //[self addSearchZip];
-//        isZipClicked = YES;
-//    }
-//    
-//    return isZipClicked;
-//}
 
 @end
