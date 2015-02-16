@@ -249,24 +249,24 @@
     
     UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 39, 138, 21)];
     //txtSearch.placeholder = @"Type search here";
-    [bbds addSubview:txtSearch];
+    [search addSubview:txtSearch];
     
     UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(7, 77, 82, 30)];
     [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
     [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
-    [bbds addSubview:btnLeft];
+    [search addSubview:btnLeft];
     
     UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(95, 77, 82, 30)];
     [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
     [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
-    [bbds addSubview:btnRight];
+    [search addSubview:btnRight];
     
     [self.view addSubview:search];
 }
 
 -(void)dismissView
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [search removeFromSuperview];
 }
 
 
